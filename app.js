@@ -20,7 +20,7 @@ const dbConfig = {
   host: "localhost",
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: "testdb",
+  database: "todolistdb",
   port: 3308,
 };
 //GET API
@@ -29,10 +29,51 @@ app.get("/database", function (req, res) {
 
   connection.connect();
 
-  connection.query("SELECT * from Persons", (err, rows, fields) => {
-    if (err) throw err;
+  connection.query(
+    "SELECT * from Todolists where taskID = 2",
+    (err, rows, fields) => {
+      if (err) {
+        throw err;
+      } else {
+        console.log("The solution is: ", rows);
+      }
+    }
+  );
 
-    console.log("The solution is: ", rows);
+  connection.end();
+});
+
+app.get("/insert", (req, res) => {
+  const connection = sql.createConnection(dbConfig);
+
+  connection.connect();
+
+  const query = `insert into TodoLists (taskDesc, time) values('dsdsfsdfdsgfhgklfjsghlfkdjgdf', NOW());`;
+
+  connection.query(query, (err, rows, fields) => {
+    if (err) {
+      throw err;
+    } else {
+      console.log("The solution is: ", rows);
+    }
+  });
+
+  connection.end();
+});
+
+app.get("/update/:updateId", (req, res) => {
+  const connection = sql.createConnection(dbConfig);
+  connection.connect();
+
+  // taskId will be fetched by the dynamic url
+  const query = `update TodoLists set isDone = Abs(isDone -1) where taskId = ${req.params.updateId}`;
+
+  connection.query(query, (err, rows, fields) => {
+    if (err) {
+      throw err;
+    } else {
+      console.log("The solution is: ", rows);
+    }
   });
 
   connection.end();
