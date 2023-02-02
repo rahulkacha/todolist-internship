@@ -434,4 +434,22 @@ input[type="checkbox"] {
 
 #icon {
   color: #0d6efd;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.inner-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inner-most-flex {
+  display: flex;
+  gap: 12px;
+}
+
+.deleted-tasks {
+  display: flex;
+  gap: 200px;
 }

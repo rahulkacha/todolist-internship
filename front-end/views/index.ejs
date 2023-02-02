@@ -27,28 +27,40 @@
               </div>
               <div class="list-wrapper">
                 <ul class="d-flex flex-column-reverse todo-list">
-                  <% rows.forEach(element => { %>
+                  <% if (!pendingTasks.length==0) { %> <%
+                  pendingTasks.forEach(element => { %>
                   <li class="completed">
                     <div class="form-check">
                       <label class="form-check-label">
-                        <a
-                          class="no-decoration"
-                          id="<%= element.isDone ? 'done' : '' %>"
-                          href="update/<%= element.taskID %>"
-                          ><ion-icon
-                            id="icon"
-                            name="checkmark-circle<%= element.isDone ? '' : '-outline' %>"
-                          ></ion-icon>
-                          <%= element.taskDesc %>
-                        </a>
-                        <label class="form-check-label">
-                          created on <%=
-                          moment(element.time).format("DD/MM/YYYY, hh:mm A") %>
-                        </label>
+                        <div class="inner-flex">
+                          <a
+                            class="no-decoration"
+                            id="<%= element.isDone ? 'done' : '' %>"
+                            href="update/<%= element.taskID %>"
+                          >
+                            <div class="inner-most-flex">
+                              <ion-icon
+                                id="icon"
+                                name="checkmark-circle<%= element.isDone ? '' : '-outline' %>"
+                              ></ion-icon>
+                              <span>
+                                <%= pendingTasks.reverse().indexOf(element)+1%>.
+                                <%= element.taskDesc %>
+                              </span>
+                            </div>
+                          </a>
+                          <label class="form-check-label">
+                            created on <%=
+                            moment(element.time).format("DD/MM/YYYY, hh:mm A")
+                            %>
+                          </label>
+                        </div>
                       </label>
                     </div>
                   </li>
-                  <% }) %>
+                  <% }) %> <% }else { %>
+                  <p>Yay! all the tasks have been completed!</p>
+                  <% } %>
                 </ul>
               </div>
             </div>
@@ -58,6 +70,9 @@
     </div>
   </div>
 </div>
+
+<% if (!completedTasks.length==0) { %>
+
 <div class="container">
   <div class="page-content page-container" id="page-content">
     <div class="padding">
@@ -68,24 +83,40 @@
             <div class="card-body">
               <div class="list-wrapper">
                 <ul class="d-flex flex-column-reverse todo-list">
-                  <% rows.forEach(element => { %>
+                  <% completedTasks.forEach(element => { %>
                   <li class="completed">
                     <div class="form-check">
                       <label class="form-check-label">
-                        <a
-                          class="no-decoration"
-                          id="<%= element.isDone ? 'done' : '' %>"
-                          href="update/<%= element.taskID %>"
-                          ><ion-icon
-                            id="icon"
-                            name="checkmark-circle<%= element.isDone ? '' : '-outline' %>"
-                          ></ion-icon>
-                          <%= element.taskDesc %>
-                        </a>
-                        <label class="form-check-label">
-                          created on <%=
-                          moment(element.time).format("DD/MM/YYYY, hh:mm A") %>
-                        </label>
+                        <div class="inner-flex">
+                          <a
+                            class="no-decoration"
+                            id="<%= element.isDone ? 'done' : '' %>"
+                            href="update/<%= element.taskID %>"
+                            ><div class="inner-most-flex">
+                              <ion-icon
+                                id="icon"
+                                name="checkmark-circle<%= element.isDone ? '' : '-outline' %>"
+                              ></ion-icon>
+                              <span
+                                ><%=
+                                completedTasks.reverse().indexOf(element)+1%>.
+                                <%= element.taskDesc %>
+                              </span>
+                              <a
+                                class="btn btn-danger"
+                                role="button"
+                                aria-disabled="true"
+                                href="/delete/<%= element.taskID %>"
+                                >delete
+                              </a>
+                            </div>
+                          </a>
+                          <label class="form-check-label">
+                            created on <%=
+                            moment(element.time).format("DD/MM/YYYY, hh:mm A")
+                            %>
+                          </label>
+                        </div>
                       </label>
                     </div>
                   </li>
@@ -100,4 +131,4 @@
   </div>
 </div>
 
-<%- include("./partials/footer"); -%>
+<%}%> <%- include("./partials/footer"); -%>
