@@ -1,6 +1,51 @@
 <%- include("./partials/header"); -%>
+
 <div class="container">
   <h1>Todo List</h1>
+  <div class="page-content page-container" id="page-content">
+    <div class="padding">
+      <div class="row container d-flex justify-content-center">
+        <div class="col-md-12">
+          <div class="card px-3">
+            <div class="card-body">
+              <h4 class="card-title">Awesome Todo list</h4>
+              <div class="add-items d-flex">
+                <form action="/add" method="post">
+                  <input
+                    type="text"
+                    class="form-control todo-list-input"
+                    placeholder="enter a task"
+                    name="desc"
+                  />
+                  <button
+                    type="submit"
+                    class="add btn btn-primary font-weight-bold todo-list-add-btn"
+                  >
+                    Add
+                  </button>
+                </form>
+              </div>
+              <div class="list-wrapper">
+                <ul class="d-flex flex-column-reverse todo-list">
+                  <% rows.forEach(element => { %>
+                  <li class="completed">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="checkbox" type="checkbox" /> <%=
+                        element.taskDesc %> <i class="input-helper"></i
+                      ></label>
+                    </div>
+                  </li>
+
+                  <% }) %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <%- include("./partials/footer"); -%>

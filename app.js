@@ -12,10 +12,6 @@ app.use(express.static(path.join("./front-end/", "public")));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
 const dbConfig = {
   host: "localhost",
   user: process.env.DB_USER,
@@ -23,6 +19,26 @@ const dbConfig = {
   database: "todolistdb",
   port: 3308,
 };
+
+app.get("/", (req, res) => {
+  const connection = sql.createConnection(dbConfig);
+
+  connection.connect();
+
+  connection.query(
+    "SELECT * from Todolists ORDER BY taskID",
+    (err, rows, fields) => {
+      if (err) {
+        throw err;
+      } else {
+        res.render("index", { rows: rows });
+      }
+    }
+  );
+
+  connection.end();
+});
+
 //GET API
 app.get("/database", function (req, res) {
   const connection = sql.createConnection(dbConfig);
@@ -35,7 +51,6 @@ app.get("/database", function (req, res) {
       if (err) {
         throw err;
       } else {
-        console.log("The solution is: ", rows);
       }
     }
   );
@@ -43,22 +58,21 @@ app.get("/database", function (req, res) {
   connection.end();
 });
 
-app.get("/insert", (req, res) => {
+app.post("/add", (req, res) => {
   const connection = sql.createConnection(dbConfig);
+  if (req.body.desc.length != 0) {
+    connection.connect();
+    const query = `insert into TodoLists (taskDesc, time) values('${req.body.desc}', NOW());`;
 
-  connection.connect();
+    connection.query(query, (err, rows, fields) => {
+      if (err) {
+        throw err;
+      } else {
+      }
+    });
 
-  const query = `insert into TodoLists (taskDesc, time) values('dsdsfsdfdsgfhgklfjsghlfkdjgdf', NOW());`;
-
-  connection.query(query, (err, rows, fields) => {
-    if (err) {
-      throw err;
-    } else {
-      console.log("The solution is: ", rows);
-    }
-  });
-
-  connection.end();
+    connection.end();
+  }
 });
 
 app.get("/update/:updateId", (req, res) => {
@@ -72,7 +86,6 @@ app.get("/update/:updateId", (req, res) => {
     if (err) {
       throw err;
     } else {
-      console.log("The solution is: ", rows);
     }
   });
 
