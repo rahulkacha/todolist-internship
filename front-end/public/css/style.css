@@ -419,3 +419,19 @@ input[type="checkbox"] {
   .dropdown-item {
   display: flex !important;
 }
+
+/* custom added css */
+
+.no-decoration:link,
+.no-decoration:visited {
+  text-decoration: none;
+  color: #000000;
+}
+
+#done {
+  text-decoration: line-through;
+}
+
+#icon {
+  color: #0d6efd;
+}

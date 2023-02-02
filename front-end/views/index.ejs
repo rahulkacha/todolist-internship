@@ -1,14 +1,14 @@
 <%- include("./partials/header"); -%>
 
 <div class="container">
-  <h1>Todo List</h1>
   <div class="page-content page-container" id="page-content">
     <div class="padding">
+      <h2>To-Do List</h2>
+      <h4>pending tasks</h4>
       <div class="row container d-flex justify-content-center">
         <div class="col-md-12">
           <div class="card px-3">
             <div class="card-body">
-              <h4 class="card-title">Awesome Todo list</h4>
               <div class="add-items d-flex">
                 <form action="/add" method="post">
                   <input
@@ -31,12 +31,64 @@
                   <li class="completed">
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="checkbox" type="checkbox" /> <%=
-                        element.taskDesc %> <i class="input-helper"></i
-                      ></label>
+                        <a
+                          class="no-decoration"
+                          id="<%= element.isDone ? 'done' : '' %>"
+                          href="update/<%= element.taskID %>"
+                          ><ion-icon
+                            id="icon"
+                            name="checkmark-circle<%= element.isDone ? '' : '-outline' %>"
+                          ></ion-icon>
+                          <%= element.taskDesc %>
+                        </a>
+                        <label class="form-check-label">
+                          created on <%=
+                          moment(element.time).format("DD/MM/YYYY, hh:mm A") %>
+                        </label>
+                      </label>
                     </div>
                   </li>
-
+                  <% }) %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="page-content page-container" id="page-content">
+    <div class="padding">
+      <h4>completed tasks</h4>
+      <div class="row container d-flex justify-content-center">
+        <div class="col-md-12">
+          <div class="card px-3">
+            <div class="card-body">
+              <div class="list-wrapper">
+                <ul class="d-flex flex-column-reverse todo-list">
+                  <% rows.forEach(element => { %>
+                  <li class="completed">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <a
+                          class="no-decoration"
+                          id="<%= element.isDone ? 'done' : '' %>"
+                          href="update/<%= element.taskID %>"
+                          ><ion-icon
+                            id="icon"
+                            name="checkmark-circle<%= element.isDone ? '' : '-outline' %>"
+                          ></ion-icon>
+                          <%= element.taskDesc %>
+                        </a>
+                        <label class="form-check-label">
+                          created on <%=
+                          moment(element.time).format("DD/MM/YYYY, hh:mm A") %>
+                        </label>
+                      </label>
+                    </div>
+                  </li>
                   <% }) %>
                 </ul>
               </div>

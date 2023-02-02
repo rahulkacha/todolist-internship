@@ -3,6 +3,7 @@ const express = require("express");
 const ejs = require("ejs");
 const sql = require("mysql2");
 const bodyParser = require("body-parser");
+const moment = require("moment");
 const path = require("path");
 const app = express();
 
@@ -31,26 +32,7 @@ app.get("/", (req, res) => {
       if (err) {
         throw err;
       } else {
-        res.render("index", { rows: rows });
-      }
-    }
-  );
-
-  connection.end();
-});
-
-//GET API
-app.get("/database", function (req, res) {
-  const connection = sql.createConnection(dbConfig);
-
-  connection.connect();
-
-  connection.query(
-    "SELECT * from Todolists where taskID = 2",
-    (err, rows, fields) => {
-      if (err) {
-        throw err;
-      } else {
+        res.render("index", { rows: rows, moment: moment });
       }
     }
   );
@@ -62,12 +44,13 @@ app.post("/add", (req, res) => {
   const connection = sql.createConnection(dbConfig);
   if (req.body.desc.length != 0) {
     connection.connect();
-    const query = `insert into TodoLists (taskDesc, time) values('${req.body.desc}', NOW());`;
+    const query = `insert into TodoLists (taskDesc, time) values('${req.body.desc.trim()}', NOW());`;
 
     connection.query(query, (err, rows, fields) => {
       if (err) {
         throw err;
       } else {
+        res.redirect("/");
       }
     });
 
@@ -79,13 +62,13 @@ app.get("/update/:updateId", (req, res) => {
   const connection = sql.createConnection(dbConfig);
   connection.connect();
 
-  // taskId will be fetched by the dynamic url
   const query = `update TodoLists set isDone = Abs(isDone -1) where taskId = ${req.params.updateId}`;
 
   connection.query(query, (err, rows, fields) => {
     if (err) {
       throw err;
     } else {
+      res.redirect("/");
     }
   });
 
