@@ -5,6 +5,7 @@ const sql = require("mysql2");
 const bodyParser = require("body-parser");
 const moment = require("moment");
 const path = require("path");
+const { dbConfig } = require("./dbConfig");
 
 const app = express();
 
