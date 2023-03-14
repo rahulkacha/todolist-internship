@@ -1,7 +1,13 @@
-const { dbConfig } = require("../configs/dbConfig");
+require("dotenv").config({path:"/config"});
 const sql = require("mysql2");
 
-const connection = sql.createConnection(dbConfig);
+const connection = sql.createConnection( {
+  host: "localhost",
+  user: "root" ,//your username
+  password: "Rk@322002", //your password
+  database: "todolistdb",
+  port: 3308, //your port
+});
 
 connection.connect();
 
